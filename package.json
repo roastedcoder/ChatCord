@@ -1,0 +1,17 @@
+{
+  "name": "chatcord",
+  "version": "1.0.0",
+  "description": "open chatting app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "suraj kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "moment": "^2.29.1",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1"
+  }
+}
