@@ -16,6 +16,7 @@ app.use(express.static("public"));
 
 const admin = 'admin';
 let userName = 'anonymous';
+let joinFlag = 0;
 
 io.on('connection', socket => {
     console.log('new websocket connection...');
@@ -27,12 +28,12 @@ io.on('connection', socket => {
         userName = user.username;
 
         // welcome message
-        socket.emit('message', formatMessage(admin, 'welcome home sir!'));
+        socket.emit('message', formatMessage(admin, 'Welcome to ChatCord!', joinFlag+1));
 
         // broadcast when a user connects
         socket.broadcast
                 .to(user.room)
-                .emit('message', formatMessage(admin, `${user.username} has joined the chat`));
+                .emit('message', formatMessage(admin, `${user.username} has joined the chat`, joinFlag+1));
 
         // send user and room info
         io.to(user.room).emit('roomUsers', {
@@ -46,7 +47,7 @@ io.on('connection', socket => {
     // listen for chat message
     socket.on('chatMessage', (msg) => {
         const user = getCurrentUser(socket.id);
-        io.to(user.room).emit('message', formatMessage(user.username, msg));
+        io.to(user.room).emit('message', formatMessage(user.username, msg, joinFlag));
         // console.log(msg);
     });
 
@@ -55,7 +56,7 @@ io.on('connection', socket => {
         const user = userLeave(socket.id);
         if(user) {
             io.to(user.room).emit('message', 
-                formatMessage(admin, `${user.username} has left the chat`)
+                formatMessage(admin, `${user.username} has left the chat`, joinFlag+1)
             );
         
             // send user and room info

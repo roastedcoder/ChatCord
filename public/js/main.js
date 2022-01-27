@@ -25,11 +25,15 @@ socket.on('roomUsers', ({room, users}) => {
 
 // message from server
 socket.on('message', message => {
-    console.log(message);
-    outputMessage(message);
-
-    // scroll down
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    // console.log(message);
+    if(message.joinFlag === 1) {
+        showSnackBar(message);
+    }
+    else {
+        outputMessage(message);
+        // scroll down
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 });
 
 // message submit
@@ -74,7 +78,16 @@ function outputRoomName(room) {
 
 // Add users to DOM
 function outputUsers(users) {
-    userList.innerHTML = `
-        ${users.map(user => `<li>${user.username}</li>`).join('')}
-    `;
+    userList.innerHTML = `${users.map(user => `<li>${user.username}</li>`).join('')}`;
+}
+
+function showSnackBar(message) {
+    var snackbar = document.getElementById("snackbar");
+
+    // Add the "show" class to DIV
+    snackbar.className = "show";
+    snackbar.innerHTML = message.text;
+
+    // After 5 seconds, remove the show class from DIV
+    setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }
