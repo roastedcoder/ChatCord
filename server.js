@@ -42,20 +42,31 @@ io.on('connection', socket => {
         });
     });
 
-
-
     // listen for chat message
     socket.on('chatMessage', (msg) => {
         const user = getCurrentUser(socket.id);
+
+        // send chat-message
         io.to(user.room).emit('message', formatMessage(user.username, msg, joinFlag));
         // console.log(msg);
     });
 
+    // listen for userTyping
+    socket.on('userTyping', (userName) => {
+        const user = getCurrentUser(socket.id);
+        if(userName === user.username) {
+            socket.broadcast.to(user.room).emit('user_typing', `${userName} is typing...`);
+        }
+        else {
+            socket.broadcast.to(user.room).emit('user_typing', '');
+        }
+    });
+
     // runs when a client disconnects
-    socket.on('disconnect', ()=> {  
+    socket.on('disconnect', ()=> {
         const user = userLeave(socket.id);
         if(user) {
-            io.to(user.room).emit('message', 
+            io.to(user.room).emit('message',
                 formatMessage(admin, `${user.username} has left the chat`, joinFlag+1)
             );
         
@@ -65,7 +76,6 @@ io.on('connection', socket => {
                 users: getRoomUsers(user.room)
             });
         }
-        
     });
 })
 

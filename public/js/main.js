@@ -7,6 +7,8 @@ const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
 const leaveBTN = document.getElementById('leave-btn');
+const showType = document.getElementById('usertyping');
+const messageBox = document.getElementById('msg');
 
 // get username and room from URL
 const {username, room} = Qs.parse(location.search, {
@@ -25,7 +27,6 @@ socket.on('roomUsers', ({room, users}) => {
 
 // message from server
 socket.on('message', message => {
-    // console.log(message);
     if(message.joinFlag === 1) {
         showSnackBar(message);
     }
@@ -35,6 +36,38 @@ socket.on('message', message => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 });
+
+// user typing msg from server
+socket.on('user_typing', msg => {
+    showType.innerHTML = msg;
+    if(msg !== '') {
+        showType.className = "showtyping";
+    }
+    else {
+        showType.className = showType.className.replace("showtyping", "");
+    }
+});
+
+// user typing
+var isTyping = false;
+var isNotTyping;
+document.getElementById('msg').onkeyup = () => {
+    sendIsTypingToUser();
+    if (isNotTyping != undefined) clearTimeout(isNotTyping);
+    isNotTyping = setTimeout(sendIsNotTyping, 500);
+};
+
+function sendIsTypingToUser() {
+    if(!isTyping){
+        socket.emit('userTyping', username);
+        isTyping = true;
+    }
+}
+function sendIsNotTyping() {
+    socket.emit('userTyping', null);
+    isTyping = false;
+}
+
 
 // message submit
 charForm.addEventListener('submit', (e)=> {
