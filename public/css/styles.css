@@ -8,6 +8,14 @@
 	--error-color: #d9534f;
 }
 
+#OR {
+	text-align: center;
+}
+
+#showRoomID{
+	font-family: monospace;
+}
+
 * {
 	box-sizing: border-box;
 	margin: 0;

@@ -6,6 +6,8 @@ const express = require("express");
 const socketio = require("socket.io");
 const formatMessage = require('./utils/messages');
 const {userJoin, getCurrentUser, userLeave, getRoomUsers} = require('./utils/users');
+const {nanoid} = require('nanoid');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -77,9 +79,15 @@ io.on('connection', socket => {
             });
         }
     });
+
+    // send NanoId to info.js
+    socket.on('getNanoID', () => {
+        const NANO_ID = nanoid(8);
+        socket.emit('generate-id', NANO_ID);
+    });
 })
 
 
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, ()=> console.log('server live at ' + PORT));
+server.listen(PORT, ()=> console.log('server live at ' + PORT + '...'));

@@ -1,8 +1,8 @@
 
 
 
-const charForm = document.getElementById('chat-form');
 const socket = io(); // bcoz of script tag in chat.html
+const charForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
@@ -121,6 +121,6 @@ function showSnackBar(message) {
     snackbar.className = "show";
     snackbar.innerHTML = message.text;
 
-    // After 5 seconds, remove the show class from DIV
+    // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ snackbar.className = snackbar.className.replace("show", ""); }, 3000);
 }

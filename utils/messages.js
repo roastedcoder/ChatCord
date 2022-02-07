@@ -13,4 +13,5 @@ function formatMessage(username, text, joinFlag) {
 }
 
 
+
 module.exports = formatMessage;

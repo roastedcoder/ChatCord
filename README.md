@@ -5,5 +5,10 @@
 * deployed on [heroku](https://pure-wave-21818.herokuapp.com/)
 
 ### Improvements:
-* added ***snackbar*** instead of message in chatbox (for new user join).
-* added ***user is typing*** feature.
+
+* #### Major
+    * added ***user is typing*** feature.
+    * added ***custom room feature***- roomID will be generated and users can join room with same roomID.
+
+* #### Minor
+    * added ***snackbar*** instead of message in chatbox (for new user join).
